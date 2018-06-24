@@ -24,7 +24,7 @@ const styles = theme => ({
 
 class SimpleSelect extends React.Component {
   state = {
-    month: '',
+    month: this.props.month,
   };
 
   handleChange = event => {
@@ -46,9 +46,6 @@ class SimpleSelect extends React.Component {
               id: 'select-month',
             }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
             <MenuItem value={'January'}>January</MenuItem>
             <MenuItem value={'February'}>February</MenuItem>
             <MenuItem value={'March'}>March</MenuItem>

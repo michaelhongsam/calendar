@@ -42,7 +42,7 @@ function Event(props) {
   return (
     <div className={classes.root}>
       <Card>
-        <CardContent>
+        <CardContent onClick={handleClick}>
           <Typography variant="headline" component="h2">
             Interview
           </Typography>
@@ -51,7 +51,9 @@ function Event(props) {
           <Typography component="p">Description: On-site interviews</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Delete Event</Button>
+          <Button 
+          onClick={handleDelete}
+          size="small">Delete Event</Button>
         </CardActions>
       </Card>
     </div>

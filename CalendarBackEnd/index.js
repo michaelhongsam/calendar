@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000; 
 const db = require('./db');
 
-
 const app = express();
 
 app.use(morgan('dev'));
@@ -29,8 +28,12 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
 
-app.listen(port, function () {
-  console.log(`Listening on port ${port}`);
-});
+const syncDb = () => db.sync();
+
+syncDb().then(
+  app.listen(port, function () {
+    console.log(`Listening on port ${port}`);
+  })
+)
 
 module.exports = app;
