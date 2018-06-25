@@ -114,11 +114,8 @@ var _createEvent2 = _interopRequireDefault(_createEvent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import {currentYear, currentMonth, currentDay } from '../util'
-
 // import Header from './components/header'
 var App = function App() {
-  // console.log('in app.js')
   return _react2.default.createElement(
     'div',
     { className: 'app' },

@@ -2,17 +2,13 @@ import React from 'react'
 // import Header from './components/header'
 import Calendar from './components/calendar'
 
-import SimpleDialogDemo from './components/createEvent'
-
-// import {currentYear, currentMonth, currentDay } from '../util'
+import CreateEvent from './components/createEvent'
 
 const App = () => {
-  // console.log('in app.js')
   return (
     <div className="app">
 
-      <SimpleDialogDemo/>
-      {/*<Header month={currentMonth()} year={currentYear()}/>*/}
+      <CreateEvent/>
       <Calendar />
     </div>
   )
