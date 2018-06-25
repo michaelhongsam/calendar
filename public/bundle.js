@@ -753,12 +753,6 @@ var SimpleDialogDemo = function (_React$Component2) {
         null,
         _react2.default.createElement(
           _Typography2.default,
-          { variant: "subheading" },
-          "Selected: ",
-          this.state.selectedValue
-        ),
-        _react2.default.createElement(
-          _Typography2.default,
           { variant: "body1" },
           "Date: ",
           this.state.date.toString()

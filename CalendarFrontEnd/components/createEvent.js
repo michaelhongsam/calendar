@@ -174,9 +174,7 @@ class SimpleDialogDemo extends React.Component {
   render() {
     return (
       <div>
-        <Typography variant="subheading">
-          Selected: {this.state.selectedValue}
-        </Typography>
+        
         <Typography variant="body1">Date: {this.state.date.toString()}</Typography>
         <Typography variant="body1">Year: {this.state.year}</Typography>
         <Typography variant="body1">
