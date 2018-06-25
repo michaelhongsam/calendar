@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Header from "./header";
 import Event from "./event";
-import { currentYear, currentMonth, currentDay } from "../util";
+import { months, days, currentYear, currentMonth, currentDay, daysInMonth } from "../util";
 
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -52,27 +52,30 @@ const data = [
 class Calendar extends Component {
   constructor(props) {
     super(props);
-    const { classes } = props;
+    // const { classes } = props;
 
     this.state = {
-      classes,
-      year: currentYear(),
-      month: currentMonth(),
-      day: currentDay(),
+      // classes,
+      year: new Date(Date.now()).getFullYear(),
+      month: new Date(Date.now()).getMonth(),
+      day: new Date(Date.now()).getDay(),
+
       data: []
     };
-    // this.updateTable();
+    this.updateTable();
   }
 
   updateTable = () => {
     // get selected month's first sunday
-    let counter = new Date(`${this.state.month} 1`).getDay();
-    console.log(this.state.month);
-    console.log(counter);
-    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-    ];
+    let leadingZeros = new Date(`${this.state.month}, 1 ${this.state.year}`).getDay()
 
-    console.log(days[counter]);
+    let numberOfDays = daysInMonth(this.state.month, this.state.year)
+
+    console.log(months[this.state.month] + '(' +this.state.month + ') has ' + numberOfDays + ' days')
+    console.log(leadingZeros + ' leading zeros')
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    console.log(days[leadingZeros]);
   };
 
   selectMonth = event => {
@@ -84,7 +87,7 @@ class Calendar extends Component {
       [event.target.name]: event.target.value
     });
     // console.log("updating table");
-    // this.updateTable();
+    this.updateTable();
   };
 
   render() {
@@ -101,18 +104,18 @@ class Calendar extends Component {
                 id: "select-month"
               }}
             >
-              <MenuItem value={"January"}>January</MenuItem>
-              <MenuItem value={"February"}>February</MenuItem>
-              <MenuItem value={"March"}>March</MenuItem>
-              <MenuItem value={"April"}>April</MenuItem>
-              <MenuItem value={"May"}>May</MenuItem>
-              <MenuItem value={"June"}>June</MenuItem>
-              <MenuItem value={"July"}>July</MenuItem>
-              <MenuItem value={"August"}>August</MenuItem>
-              <MenuItem value={"September"}>September</MenuItem>
-              <MenuItem value={"October"}>October</MenuItem>
-              <MenuItem value={"November"}>November</MenuItem>
-              <MenuItem value={"December"}>December</MenuItem>
+              <MenuItem value={1}>January</MenuItem>
+              <MenuItem value={2}>February</MenuItem>
+              <MenuItem value={3}>March</MenuItem>
+              <MenuItem value={4}>April</MenuItem>
+              <MenuItem value={5}>May</MenuItem>
+              <MenuItem value={6}>June</MenuItem>
+              <MenuItem value={7}>July</MenuItem>
+              <MenuItem value={8}>August</MenuItem>
+              <MenuItem value={9}>September</MenuItem>
+              <MenuItem value={10}>October</MenuItem>
+              <MenuItem value={11}>November</MenuItem>
+              <MenuItem value={12}>December</MenuItem>
             </Select>
           </FormControl>
         </form>

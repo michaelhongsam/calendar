@@ -251,16 +251,21 @@ var Calendar = function (_Component) {
   function Calendar(props) {
     _classCallCheck(this, Calendar);
 
+    // const { classes } = props;
+
     var _this = _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props));
 
     _this.updateTable = function () {
       // get selected month's first sunday
-      var counter = new Date(_this.state.month + " 1").getDay();
-      console.log(_this.state.month);
-      console.log(counter);
+      var leadingZeros = new Date(_this.state.month + ", 1 " + _this.state.year).getDay();
+
+      var numberOfDays = (0, _util.daysInMonth)(_this.state.month, _this.state.year);
+
+      console.log(_util.months[_this.state.month] + '(' + _this.state.month + ') has ' + numberOfDays + ' days');
+      console.log(leadingZeros + ' leading zeros');
       var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-      console.log(days[counter]);
+      console.log(days[leadingZeros]);
     };
 
     _this.selectMonth = function (event) {
@@ -270,20 +275,18 @@ var Calendar = function (_Component) {
       // );
       _this.setState(_defineProperty({}, event.target.name, event.target.value));
       // console.log("updating table");
-      // this.updateTable();
+      _this.updateTable();
     };
-
-    var classes = props.classes;
-
 
     _this.state = {
-      classes: classes,
-      year: (0, _util.currentYear)(),
-      month: (0, _util.currentMonth)(),
-      day: (0, _util.currentDay)(),
+      // classes,
+      year: new Date(Date.now()).getFullYear(),
+      month: new Date(Date.now()).getMonth(),
+      day: new Date(Date.now()).getDay(),
+
       data: []
     };
-    // this.updateTable();
+    _this.updateTable();
     return _this;
   }
 
@@ -316,62 +319,62 @@ var Calendar = function (_Component) {
               },
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "January" },
+                { value: 1 },
                 "January"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "February" },
+                { value: 2 },
                 "February"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "March" },
+                { value: 3 },
                 "March"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "April" },
+                { value: 4 },
                 "April"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "May" },
+                { value: 5 },
                 "May"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "June" },
+                { value: 6 },
                 "June"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "July" },
+                { value: 7 },
                 "July"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "August" },
+                { value: 8 },
                 "August"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "September" },
+                { value: 9 },
                 "September"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "October" },
+                { value: 10 },
                 "October"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "November" },
+                { value: 11 },
                 "November"
               ),
               _react2.default.createElement(
                 _MenuItem2.default,
-                { value: "December" },
+                { value: 12 },
                 "December"
               )
             )
@@ -1170,14 +1173,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.currentYear = currentYear;
 exports.currentMonth = currentMonth;
 exports.currentDay = currentDay;
+exports.daysInMonth = daysInMonth;
 var yearNow = new Date(Date.now()).getFullYear();
 var monthNow = new Date(Date.now()).getMonth();
 var dateNow = new Date(Date.now()).getDate();
 var dayNow = new Date(Date.now()).getDay();
 
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var months = exports.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var days = exports.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // console.log(yearNow)
 // console.log(months[monthNow])
@@ -1193,6 +1196,10 @@ function currentMonth() {
 
 function currentDay() {
   return days[dayNow];
+}
+
+function daysInMonth(month, year) {
+  return new Date(year, month, 0).getDate();
 }
 
 /***/ }),
