@@ -263,31 +263,280 @@ var Calendar = function (_Component) {
       var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
       console.log(days[leadingZeros]);
+
+      var data = [];
+
+      for (var i = 1; i <= numberOfDays; i++) {
+        while (leadingZeros !== 0) {
+          data.push(null);
+          leadingZeros--;
+        }
+        data.push(i);
+      }
+      return data;
     };
 
     _this.selectMonth = function (event) {
-      // console.log('[event.target.name]: event.target.value,' + event.target.name + event.target.value )
-      // console.log(
-      //   "setting state " + event.target.name + " " + event.target.value
-      // );
-      _this.setState(_defineProperty({}, event.target.name, event.target.value));
-      // console.log("updating table");
-      _this.updateTable();
+      var _this$setState;
+
+      _this.setState((_this$setState = {}, _defineProperty(_this$setState, event.target.name, event.target.value), _defineProperty(_this$setState, "data", _this.updateTable()), _this$setState));
     };
 
     _this.state = {
       // classes,
       year: new Date(Date.now()).getFullYear(),
-      month: new Date(Date.now()).getMonth(),
-      day: new Date(Date.now()).getDay(),
+      month: new Date(Date.now()).getMonth() + 1, // getMonth() STARTS AT 0. Jan --> 0
+      day: new Date(Date.now()).getDay(), // getDay() STARTS AT 0. Sunday --> 0
 
       data: []
     };
-    _this.updateTable();
+    _this.state.data = _this.updateTable();
     return _this;
   }
 
   _createClass(Calendar, [{
+    key: "renderTable",
+    value: function renderTable() {
+      return _react2.default.createElement(
+        _TableBody2.default,
+        null,
+        _react2.default.createElement(
+          _TableRow2.default,
+          null,
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[0]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[1]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[2]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[3]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[4]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[5]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[6]
+          )
+        ),
+        _react2.default.createElement(
+          _TableRow2.default,
+          null,
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[7]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[8]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[9]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[10]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[11]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[12]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[13]
+          )
+        ),
+        _react2.default.createElement(
+          _TableRow2.default,
+          null,
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[14]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[15]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[16]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[17]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[18]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[19]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[20]
+          )
+        ),
+        _react2.default.createElement(
+          _TableRow2.default,
+          null,
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[21]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[22]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[24]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[25]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[26]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[27]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[28]
+          )
+        ),
+        _react2.default.createElement(
+          _TableRow2.default,
+          null,
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[28]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[29]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[30]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[31]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[32]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[33]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[34]
+          )
+        ),
+        _react2.default.createElement(
+          _TableRow2.default,
+          null,
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[35]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[36]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[37]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[38]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[39]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[40]
+          ),
+          _react2.default.createElement(
+            _TableCell2.default,
+            null,
+            this.state.data[41]
+          )
+        )
+      );
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -426,51 +675,7 @@ var Calendar = function (_Component) {
                 )
               )
             ),
-            _react2.default.createElement(
-              _TableBody2.default,
-              null,
-              data.map(function (n) {
-                return _react2.default.createElement(
-                  _TableRow2.default,
-                  { key: n.id },
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.sunday
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.monday
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.tuesday
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.wednesday
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.thursday
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.friday
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    null,
-                    n.saturday
-                  )
-                );
-              })
-            )
+            this.renderTable()
           )
         )
       );
@@ -1170,7 +1375,7 @@ var monthNow = new Date(Date.now()).getMonth();
 var dateNow = new Date(Date.now()).getDate();
 var dayNow = new Date(Date.now()).getDay();
 
-var months = exports.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var months = exports.months = ['zero', "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var days = exports.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // console.log(yearNow)

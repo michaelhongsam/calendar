@@ -57,12 +57,12 @@ class Calendar extends Component {
     this.state = {
       // classes,
       year: new Date(Date.now()).getFullYear(),
-      month: new Date(Date.now()).getMonth(),
-      day: new Date(Date.now()).getDay(),
+      month: new Date(Date.now()).getMonth()+1, // getMonth() STARTS AT 0. Jan --> 0
+      day: new Date(Date.now()).getDay(), // getDay() STARTS AT 0. Sunday --> 0
 
       data: []
-    };
-    this.updateTable();
+    }
+    this.state.data = this.updateTable()
   }
 
   updateTable = () => {
@@ -76,19 +76,86 @@ class Calendar extends Component {
     let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     console.log(days[leadingZeros]);
+
+    let data = []
+
+    for (let i = 1; i <= numberOfDays; i++){
+      while (leadingZeros !== 0){
+        data.push(null)
+        leadingZeros--
+      }
+      data.push(i)
+    }
+    return data
   };
 
   selectMonth = event => {
-    // console.log('[event.target.name]: event.target.value,' + event.target.name + event.target.value )
-    // console.log(
-    //   "setting state " + event.target.name + " " + event.target.value
-    // );
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      data: this.updateTable()
     });
-    // console.log("updating table");
-    this.updateTable();
   };
+
+  renderTable(){
+    return (
+      <TableBody>
+      <TableRow>
+        <TableCell>{this.state.data[0]}</TableCell>
+        <TableCell>{this.state.data[1]}</TableCell>
+        <TableCell>{this.state.data[2]}</TableCell>
+        <TableCell>{this.state.data[3]}</TableCell>
+        <TableCell>{this.state.data[4]}</TableCell>
+        <TableCell>{this.state.data[5]}</TableCell>
+        <TableCell>{this.state.data[6]}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{this.state.data[7]}</TableCell>
+        <TableCell>{this.state.data[8]}</TableCell>
+        <TableCell>{this.state.data[9]}</TableCell>
+        <TableCell>{this.state.data[10]}</TableCell>
+        <TableCell>{this.state.data[11]}</TableCell>
+        <TableCell>{this.state.data[12]}</TableCell>
+        <TableCell>{this.state.data[13]}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{this.state.data[14]}</TableCell>
+        <TableCell>{this.state.data[15]}</TableCell>
+        <TableCell>{this.state.data[16]}</TableCell>
+        <TableCell>{this.state.data[17]}</TableCell>
+        <TableCell>{this.state.data[18]}</TableCell>
+        <TableCell>{this.state.data[19]}</TableCell>
+        <TableCell>{this.state.data[20]}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{this.state.data[21]}</TableCell>
+        <TableCell>{this.state.data[22]}</TableCell>
+        <TableCell>{this.state.data[24]}</TableCell>
+        <TableCell>{this.state.data[25]}</TableCell>
+        <TableCell>{this.state.data[26]}</TableCell>
+        <TableCell>{this.state.data[27]}</TableCell>
+        <TableCell>{this.state.data[28]}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{this.state.data[28]}</TableCell>
+        <TableCell>{this.state.data[29]}</TableCell>
+        <TableCell>{this.state.data[30]}</TableCell>
+        <TableCell>{this.state.data[31]}</TableCell>
+        <TableCell>{this.state.data[32]}</TableCell>
+        <TableCell>{this.state.data[33]}</TableCell>
+        <TableCell>{this.state.data[34]}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>{this.state.data[35]}</TableCell>
+        <TableCell>{this.state.data[36]}</TableCell>
+        <TableCell>{this.state.data[37]}</TableCell>
+        <TableCell>{this.state.data[38]}</TableCell>
+        <TableCell>{this.state.data[39]}</TableCell>
+        <TableCell>{this.state.data[40]}</TableCell>
+        <TableCell>{this.state.data[41]}</TableCell>
+      </TableRow>
+      </TableBody>
+    )
+  }
 
   render() {
     return (
@@ -132,8 +199,8 @@ class Calendar extends Component {
                 <TableCell>Saturday</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {data.map(n => {
+            {/*<TableBody>
+              data.map(n => {
                 return (
                   <TableRow key={n.id}>
                     <TableCell>{n.sunday}</TableCell>
@@ -145,8 +212,9 @@ class Calendar extends Component {
                     <TableCell>{n.saturday}</TableCell>
                   </TableRow>
                 );
-              })}
-            </TableBody>
+              })
+              </TableBody>*/}
+              {this.renderTable()}
           </Table>
         </Paper>
       </div>

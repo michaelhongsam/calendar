@@ -3,7 +3,7 @@ let monthNow = new Date(Date.now()).getMonth()
 let dateNow = new Date(Date.now()).getDate()
 let dayNow = new Date(Date.now()).getDay()
 
-export const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+export const months = ['zero', "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 export const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 // console.log(yearNow)
