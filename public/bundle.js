@@ -288,7 +288,7 @@ var Calendar = function (_Component) {
             // console.log(day)
             return _react2.default.createElement(
               _TableCell2.default,
-              null,
+              { style: { padding: '2px' } },
               day
             );
           })
@@ -839,15 +839,7 @@ function Day(props) {
         null,
         _react2.default.createElement(_event2.default, { title: 'title: ' })
       )
-    ) : _react2.default.createElement(
-      'div',
-      null,
-      _react2.default.createElement(
-        _CardContent2.default,
-        null,
-        'empty'
-      )
-    )
+    ) : _react2.default.createElement('div', null)
   );
 }
 

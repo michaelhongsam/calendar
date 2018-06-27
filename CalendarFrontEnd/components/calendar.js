@@ -88,7 +88,7 @@ class Calendar extends Component {
           {week.map(day => {
             // console.log(day)
             return(
-              <TableCell>{day}</TableCell>
+              <TableCell style={{padding: '2px'}}>{day}</TableCell>
             )
           })}
         </TableRow>

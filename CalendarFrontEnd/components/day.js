@@ -24,10 +24,7 @@ function Day(props) {
               </CardContent>
             </div>
           ) : (
-            <div>
-              <CardContent>empty
-              </CardContent>
-            </div>
+            <div />
           )
         }
         </Card>
