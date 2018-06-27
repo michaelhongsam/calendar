@@ -1,5 +1,18 @@
 const router = require("express").Router();
-const Event = require("../db/models");
+const EventTwo = require("../db/models");
+const Event = EventTwo
+
+// matches GET requests to /api/month/:monthNum
+router.get("/month/:monthNum", (req, res, next) => {
+  Event.findAll({
+    where: {
+      date: monthNum
+      }
+    }
+  )
+    .then(events => res.json(events))
+    .catch(next);
+});
 
 // matches GET requests to /api/
 router.get("/", (req, res, next) => {

@@ -114,7 +114,6 @@ var _createEvent2 = _interopRequireDefault(_createEvent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import Header from './components/header'
 var App = function App() {
   return _react2.default.createElement(
     'div',
@@ -148,14 +147,6 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _header = __webpack_require__(/*! ./header */ "./CalendarFrontEnd/components/header.js");
-
-var _header2 = _interopRequireDefault(_header);
-
-var _event = __webpack_require__(/*! ./event */ "./CalendarFrontEnd/components/event.js");
-
-var _event2 = _interopRequireDefault(_event);
-
 var _util = __webpack_require__(/*! ../util */ "./CalendarFrontEnd/util.js");
 
 var _InputLabel = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/InputLabel/index.js");
@@ -173,8 +164,6 @@ var _FormControl2 = _interopRequireDefault(_FormControl);
 var _Select = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/Select/index.js");
 
 var _Select2 = _interopRequireDefault(_Select);
-
-var _styles = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/styles/index.js");
 
 var _Table = __webpack_require__(/*! @material-ui/core/Table */ "./node_modules/@material-ui/core/Table/index.js");
 
@@ -200,6 +189,14 @@ var _Paper = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
+var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _day = __webpack_require__(/*! ./day */ "./CalendarFrontEnd/components/day.js");
+
+var _day2 = _interopRequireDefault(_day);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -209,38 +206,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import FormHelperText from '@material-ui/core/FormHelperText';
-
-
-// import { Typography } from "@material-ui/core";
-
-var week = 0;
-function createData(sunday, monday, tuesday, wednesday, thursday, friday, saturday) {
-  week += 1;
-  return {
-    week: week, sunday: sunday, monday: monday, tuesday: tuesday, wednesday: wednesday, thursday: thursday, friday: friday, saturday: saturday
-  };
-}
-
-var data = [
-// createData(
-//   <div>1
-//     <Event/>
-//   </div>, '2', '3', '4', '5', '6', '7'),
-createData("1", "2", "3", "4", "5", "6", "7"), createData("8", "9", "10", "11", "12", "13", "14"), createData("15", "16", "17", "18", "19", "20", "21"),
-// createData('15', '16', '17', '18', <div>19<Event></Event></div> , '20', '21'),
-createData("22", "23", "24", "25", "26", "27", "28"), createData("29", "30", "31", "32", "33", "34", "35")
-// createData(
-//   // <div>29<Event></Event></div>,
-//   // <div>30<Event></Event></div>,
-//   // <div>31<Event></Event></div>,
-//   // <div>32<Event></Event></div>,
-//   // <div>33<Event></Event></div>,
-//   // <div>34<Event></Event></div>,
-//   // <div>35<Event></Event></div>
-//    '29', '30', '31', '32', '33', '34', '35',
-//   )
-];
 
 var Calendar = function (_Component) {
   _inherits(Calendar, _Component);
@@ -252,293 +217,89 @@ var Calendar = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Calendar.__proto__ || Object.getPrototypeOf(Calendar)).call(this, props));
 
-    _this.updateTable = function () {
-      // get selected month's first sunday
-      var leadingZeros = new Date(_this.state.month + ", 1 " + _this.state.year).getDay();
-
-      var numberOfDays = (0, _util.daysInMonth)(_this.state.month, _this.state.year);
-
-      console.log(_util.months[_this.state.month] + '(' + _this.state.month + ') has ' + numberOfDays + ' days');
-      console.log(leadingZeros + ' leading zeros');
-      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-      console.log(days[leadingZeros]);
-
-      var data = [];
-
-      for (var i = 1; i <= numberOfDays; i++) {
-        while (leadingZeros !== 0) {
-          data.push(null);
-          leadingZeros--;
-        }
-        data.push(i);
-      }
-      return data;
-    };
-
     _this.selectMonth = function (event) {
-      var _this$setState;
-
-      _this.setState((_this$setState = {}, _defineProperty(_this$setState, event.target.name, event.target.value), _defineProperty(_this$setState, "data", _this.updateTable()), _this$setState));
+      _this.setState(_defineProperty({}, event.target.name, event.target.value));
     };
 
     _this.state = {
       // classes,
-      year: new Date(Date.now()).getFullYear(),
-      month: new Date(Date.now()).getMonth() + 1, // getMonth() STARTS AT 0. Jan --> 0
-      day: new Date(Date.now()).getDay(), // getDay() STARTS AT 0. Sunday --> 0
+      year: _util.TODAY.getFullYear(),
+      month: _util.TODAY.getMonth() + 1, // getMonth() STARTS AT 0. Jan --> 0
+      day: _util.TODAY.getDay(), // getDay() STARTS AT 0. Sunday --> 0
 
-      data: []
+      events: []
     };
-    _this.state.data = _this.updateTable();
     return _this;
   }
 
   _createClass(Calendar, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      _axios2.default.get("/api").then(function (res) {
+        return res.data;
+      }).then(function (data) {
+        _this2.setState({
+          events: data
+        });
+      });
+    }
+  }, {
     key: "renderTable",
     value: function renderTable() {
-      return _react2.default.createElement(
-        _TableBody2.default,
-        null,
-        _react2.default.createElement(
+      var leadingSpaces = new Date(this.state.month + ", 1 " + this.state.year).getDay();
+      var numberOfDays = (0, _util.daysInMonth)(this.state.month, this.state.year);
+
+      var trailingSpaces = 0;
+
+      var remainder = leadingSpaces + numberOfDays % 7;
+      if (remainder !== 0) trailingSpaces = 7 - remainder;
+
+      var totalSpaces = leadingSpaces + numberOfDays + trailingSpaces;
+      var numberOfWeeks = totalSpaces / 7;
+
+      var counter = 1;
+      var arrWeeks = [];
+
+      for (var i = 0; i < numberOfWeeks; i++) {
+        var week = [];
+        for (var j = 0; j < 7; j++) {
+          if (leadingSpaces > 0) {
+            week.push(_react2.default.createElement(_day2.default, null));
+            leadingSpaces--;
+          } else if (counter <= numberOfDays) {
+            week.push(_react2.default.createElement(_day2.default, { date: counter }));
+            counter++;
+          } else if (trailingSpaces > 0) {
+            week.push(_react2.default.createElement(_day2.default, null));
+            trailingSpaces--;
+          }
+        }
+        // console.log(week);
+        arrWeeks.push(week);
+      }
+      console.log(arrWeeks);
+      return arrWeeks.map(function (week) {
+        return _react2.default.createElement(
           _TableRow2.default,
           null,
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[0]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[1]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[2]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[3]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[4]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[5]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[6]
-          )
-        ),
-        _react2.default.createElement(
-          _TableRow2.default,
-          null,
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[7]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[8]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[9]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[10]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[11]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[12]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[13]
-          )
-        ),
-        _react2.default.createElement(
-          _TableRow2.default,
-          null,
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[14]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[15]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[16]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[17]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[18]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[19]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[20]
-          )
-        ),
-        _react2.default.createElement(
-          _TableRow2.default,
-          null,
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[21]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[22]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[24]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[25]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[26]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[27]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[28]
-          )
-        ),
-        _react2.default.createElement(
-          _TableRow2.default,
-          null,
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[28]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[29]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[30]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[31]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[32]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[33]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[34]
-          )
-        ),
-        _react2.default.createElement(
-          _TableRow2.default,
-          null,
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[35]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[36]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[37]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[38]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[39]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[40]
-          ),
-          _react2.default.createElement(
-            _TableCell2.default,
-            null,
-            this.state.data[41]
-          )
-        )
-      );
+          week.map(function (day) {
+            // console.log(day)
+            return _react2.default.createElement(
+              _TableCell2.default,
+              null,
+              day
+            );
+          })
+        );
+      });
     }
   }, {
     key: "render",
     value: function render() {
+      // let data = this.state.data
+      // console.log("events: " + this.state.events);
       return _react2.default.createElement(
         "div",
         null,
@@ -675,7 +436,11 @@ var Calendar = function (_Component) {
                 )
               )
             ),
-            this.renderTable()
+            _react2.default.createElement(
+              _TableBody2.default,
+              null,
+              this.renderTable() /* Renders the TableRow(s) and TableCell(s) */
+            )
           )
         )
       );
@@ -805,10 +570,13 @@ var SimpleDialog = function (_React$Component) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SimpleDialog.__proto__ || Object.getPrototypeOf(SimpleDialog)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       title: '',
+      year: new Date(Date.now()).getFullYear(),
+      month: new Date(Date.now()).getMonth(),
+      day: new Date(Date.now()).getDate(),
       startTime: '',
       endTime: '',
-      description: '',
-      date: 0
+      description: ''
+
     }, _this.handleChange = function (name) {
       return function (event) {
         _this.setState(_defineProperty({}, name, event.target.value));
@@ -819,7 +587,9 @@ var SimpleDialog = function (_React$Component) {
       console.log('saved');
       _axios2.default.post('/api', {
         title: _this.state.title,
-        date: new Date(Date.now()),
+        year: _this.state.year,
+        month: _this.state.month,
+        day: _this.state.day,
         startTime: _this.state.startTime,
         endTime: _this.state.endTime,
         description: _this.state.description
@@ -1007,6 +777,84 @@ exports.default = SimpleDialogDemo;
 
 /***/ }),
 
+/***/ "./CalendarFrontEnd/components/day.js":
+/*!********************************************!*\
+  !*** ./CalendarFrontEnd/components/day.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Card = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/Card/index.js");
+
+var _Card2 = _interopRequireDefault(_Card);
+
+var _CardHeader = __webpack_require__(/*! @material-ui/core/CardHeader */ "./node_modules/@material-ui/core/CardHeader/index.js");
+
+var _CardHeader2 = _interopRequireDefault(_CardHeader);
+
+var _CardActions = __webpack_require__(/*! @material-ui/core/CardActions */ "./node_modules/@material-ui/core/CardActions/index.js");
+
+var _CardActions2 = _interopRequireDefault(_CardActions);
+
+var _CardContent = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/CardContent/index.js");
+
+var _CardContent2 = _interopRequireDefault(_CardContent);
+
+var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
+
+var _Typography2 = _interopRequireDefault(_Typography);
+
+var _event = __webpack_require__(/*! ./event */ "./CalendarFrontEnd/components/event.js");
+
+var _event2 = _interopRequireDefault(_event);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import Button from '@material-ui/core/Button';
+function Day(props) {
+  var date = props.date;
+  // const { classes } = props;
+  // const bull = <span className={classes.bullet}>•</span>;
+  // console.log(props.date)
+  return _react2.default.createElement(
+    _Card2.default,
+    null,
+    date ? _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(_CardHeader2.default, { title: date }),
+      _react2.default.createElement(
+        _CardContent2.default,
+        null,
+        _react2.default.createElement(_event2.default, { title: 'title: ' })
+      )
+    ) : _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        _CardContent2.default,
+        null,
+        'empty'
+      )
+    )
+  );
+}
+
+exports.default = Day;
+
+/***/ }),
+
 /***/ "./CalendarFrontEnd/components/event.js":
 /*!**********************************************!*\
   !*** ./CalendarFrontEnd/components/event.js ***!
@@ -1025,54 +873,11 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/styles/index.js");
-
 var _Chip = __webpack_require__(/*! @material-ui/core/Chip */ "./node_modules/@material-ui/core/Chip/index.js");
 
 var _Chip2 = _interopRequireDefault(_Chip);
 
-var _Card = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/Card/index.js");
-
-var _Card2 = _interopRequireDefault(_Card);
-
-var _CardActions = __webpack_require__(/*! @material-ui/core/CardActions */ "./node_modules/@material-ui/core/CardActions/index.js");
-
-var _CardActions2 = _interopRequireDefault(_CardActions);
-
-var _CardContent = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/CardContent/index.js");
-
-var _CardContent2 = _interopRequireDefault(_CardContent);
-
-var _Button = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
-
-var _Button2 = _interopRequireDefault(_Button);
-
-var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
-
-var _Typography2 = _interopRequireDefault(_Typography);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import Avatar from '@material-ui/core/Avatar';
-var styles = {
-  card: {
-    minWidth: 275
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  title: {
-    marginBottom: 8,
-    fontSize: 12
-  },
-  pos: {
-    marginBottom: 6
-  }
-};
-// import FaceIcon from '@material-ui/icons/Face';
-// import DoneIcon from '@material-ui/icons/Done';
 
 function handleDelete() {
   alert("You clicked the delete icon."); // eslint-disable-line no-alert
@@ -1082,246 +887,23 @@ function handleClick() {
   alert("You clicked the Event."); // eslint-disable-line no-alert
 }
 
-function Event(props) {
-  var classes = props.classes;
-
-  return _react2.default.createElement(
-    "div",
-    { className: classes.root },
-    _react2.default.createElement(
-      _Card2.default,
-      null,
-      _react2.default.createElement(
-        _CardContent2.default,
-        { onClick: handleClick },
-        _react2.default.createElement(
-          _Typography2.default,
-          { variant: "headline", component: "h2" },
-          "Interview"
-        ),
-        _react2.default.createElement(
-          _Typography2.default,
-          { color: "textSecondary" },
-          "Start: 3:00 PM"
-        ),
-        _react2.default.createElement(
-          _Typography2.default,
-          { color: "textSecondary" },
-          "End: 4:00 PM"
-        ),
-        _react2.default.createElement(
-          _Typography2.default,
-          { component: "p" },
-          "Description: On-site interviews"
-        )
-      ),
-      _react2.default.createElement(
-        _CardActions2.default,
-        null,
-        _react2.default.createElement(
-          _Button2.default,
-          {
-            onClick: handleDelete,
-            size: "small" },
-          "Delete Event"
-        )
-      )
-    )
-  );
+function handleDelete() {
+  alert('You clicked the delete icon.'); // eslint-disable-line no-alert
 }
 
-exports.default = (0, _styles.withStyles)(styles)(Event);
+function handleClick() {
+  alert('You clicked the Chip.'); // eslint-disable-line no-alert
+}
 
-/***/ }),
+function Event(props) {
+  return _react2.default.createElement(_Chip2.default, {
+    label: props.title,
+    onClick: handleClick,
+    onDelete: handleDelete
+  });
+}
 
-/***/ "./CalendarFrontEnd/components/header.js":
-/*!***********************************************!*\
-  !*** ./CalendarFrontEnd/components/header.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _styles = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/styles/index.js");
-
-var _InputLabel = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/InputLabel/index.js");
-
-var _InputLabel2 = _interopRequireDefault(_InputLabel);
-
-var _MenuItem = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/MenuItem/index.js");
-
-var _MenuItem2 = _interopRequireDefault(_MenuItem);
-
-var _FormControl = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/FormControl/index.js");
-
-var _FormControl2 = _interopRequireDefault(_FormControl);
-
-var _Select = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/Select/index.js");
-
-var _Select2 = _interopRequireDefault(_Select);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import PropTypes from 'prop-types';
-
-// import Input from '@material-ui/core/Input';
-
-// import FormHelperText from '@material-ui/core/FormHelperText';
-
-
-var styles = function styles(theme) {
-  return {
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap'
-    },
-    formControl: {
-      margin: theme.spacing.unit,
-      minWidth: 120
-    },
-    selectEmpty: {
-      marginTop: theme.spacing.unit * 2
-    }
-  };
-};
-
-var SimpleSelect = function (_React$Component) {
-  _inherits(SimpleSelect, _React$Component);
-
-  function SimpleSelect() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, SimpleSelect);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SimpleSelect.__proto__ || Object.getPrototypeOf(SimpleSelect)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      month: _this.props.month
-    }, _this.handleChange = function (event) {
-      _this.setState(_defineProperty({}, event.target.name, event.target.value));
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(SimpleSelect, [{
-    key: 'render',
-    value: function render() {
-      var classes = this.props.classes;
-
-
-      return _react2.default.createElement(
-        'form',
-        { className: classes.root, autoComplete: 'off' },
-        _react2.default.createElement(
-          _FormControl2.default,
-          { className: classes.formControl },
-          _react2.default.createElement(
-            _InputLabel2.default,
-            { htmlFor: 'select-month' },
-            'Month'
-          ),
-          _react2.default.createElement(
-            _Select2.default,
-            {
-              value: this.state.month,
-              onChange: this.handleChange,
-              inputProps: {
-                name: 'month',
-                id: 'select-month'
-              }
-            },
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'January' },
-              'January'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'February' },
-              'February'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'March' },
-              'March'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'April' },
-              'April'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'May' },
-              'May'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'June' },
-              'June'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'July' },
-              'July'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'August' },
-              'August'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'September' },
-              'September'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'October' },
-              'October'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'November' },
-              'November'
-            ),
-            _react2.default.createElement(
-              _MenuItem2.default,
-              { value: 'December' },
-              'December'
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return SimpleSelect;
-}(_react2.default.Component);
-
-exports.default = (0, _styles.withStyles)(styles)(SimpleSelect);
+exports.default = Event;
 
 /***/ }),
 
@@ -1366,37 +948,43 @@ _reactDom2.default.render(_react2.default.createElement(_app2.default, null), do
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.currentYear = currentYear;
-exports.currentMonth = currentMonth;
-exports.currentDay = currentDay;
-exports.daysInMonth = daysInMonth;
-var yearNow = new Date(Date.now()).getFullYear();
-var monthNow = new Date(Date.now()).getMonth();
-var dateNow = new Date(Date.now()).getDate();
-var dayNow = new Date(Date.now()).getDay();
 
-var months = exports.months = ['zero', "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var days = exports.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var TODAY = exports.TODAY = new Date();
+
+var yearNow = TODAY.getFullYear();
+var monthNow = TODAY.getMonth();
+var dateNow = TODAY.getDate();
+var dayNow = TODAY.getDay();
+
+var months = exports.months = ["zero", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var daysOfWeek = exports.daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 // console.log(yearNow)
 // console.log(months[monthNow])
 // console.log(days[dayNow])
 
-function currentYear() {
+var currentYear = exports.currentYear = function currentYear() {
   return yearNow;
-}
+};
 
-function currentMonth() {
+var currentMonth = exports.currentMonth = function currentMonth() {
   return months[monthNow];
-}
+};
 
-function currentDay() {
+var currentDay = exports.currentDay = function currentDay() {
   return days[dayNow];
-}
+};
 
-function daysInMonth(month, year) {
+var daysInMonth = exports.daysInMonth = function daysInMonth(month, year) {
+  //return getRange(new Date(year, month, 0).getDate()).map(day => new Date(this.state.year, this.state.month, day+1))
   return new Date(year, month, 0).getDate();
-}
+};
+
+var getRange = function getRange(number) {
+  return [].concat(_toConsumableArray(Array(number).keys()));
+}; // creates and array of size {number}, where the value of each element is the key of that element, the range of numbers from 0 to number
 
 /***/ }),
 
@@ -3997,6 +3585,170 @@ Object.defineProperty(exports, "default", {
 });
 
 var _CardContent = _interopRequireDefault(__webpack_require__(/*! ./CardContent */ "./node_modules/@material-ui/core/CardContent/CardContent.js"));
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/core/CardHeader/CardHeader.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@material-ui/core/CardHeader/CardHeader.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/builtin/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/builtin/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/extends */ "./node_modules/@babel/runtime/helpers/builtin/extends.js"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/builtin/objectWithoutProperties.js"));
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "./node_modules/classnames/index.js"));
+
+var _withStyles = _interopRequireDefault(__webpack_require__(/*! ../styles/withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
+
+var _Typography = _interopRequireDefault(__webpack_require__(/*! ../Typography */ "./node_modules/@material-ui/core/Typography/index.js"));
+
+var styles = function styles(theme) {
+  return {
+    root: theme.mixins.gutters({
+      display: 'flex',
+      alignItems: 'center',
+      paddingTop: theme.spacing.unit * 2,
+      paddingBottom: theme.spacing.unit * 2
+    }),
+    avatar: {
+      flex: '0 0 auto',
+      marginRight: theme.spacing.unit * 2
+    },
+    action: {
+      flex: '0 0 auto',
+      alignSelf: 'flex-start',
+      marginTop: theme.spacing.unit * -1,
+      marginRight: theme.spacing.unit * -2
+    },
+    content: {
+      flex: '1 1 auto'
+    },
+    title: {},
+    subheader: {}
+  };
+};
+
+exports.styles = styles;
+
+function CardHeader(props) {
+  var action = props.action,
+      avatar = props.avatar,
+      classes = props.classes,
+      classNameProp = props.className,
+      Component = props.component,
+      subheader = props.subheader,
+      title = props.title,
+      other = (0, _objectWithoutProperties2.default)(props, ["action", "avatar", "classes", "className", "component", "subheader", "title"]);
+  return _react.default.createElement(Component, (0, _extends2.default)({
+    className: (0, _classnames.default)(classes.root, classNameProp)
+  }, other), avatar && _react.default.createElement("div", {
+    className: classes.avatar
+  }, avatar), _react.default.createElement("div", {
+    className: classes.content
+  }, _react.default.createElement(_Typography.default, {
+    variant: avatar ? 'body2' : 'headline',
+    component: "span",
+    className: classes.title
+  }, title), subheader && _react.default.createElement(_Typography.default, {
+    variant: avatar ? 'body2' : 'body1',
+    component: "span",
+    color: "textSecondary",
+    className: classes.subheader
+  }, subheader)), action && _react.default.createElement("div", {
+    className: classes.action
+  }, action));
+}
+
+CardHeader.propTypes =  true ? {
+  /**
+   * The action to display in the card header.
+   */
+  action: _propTypes.default.node,
+
+  /**
+   * The Avatar for the Card Header.
+   */
+  avatar: _propTypes.default.node,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * The component used for the root node.
+   * Either a string to use a DOM element or a component.
+   */
+  component: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.func, _propTypes.default.object]),
+
+  /**
+   * The content of the component.
+   */
+  subheader: _propTypes.default.node,
+
+  /**
+   * The content of the Card Title.
+   */
+  title: _propTypes.default.node
+} : undefined;
+CardHeader.defaultProps = {
+  component: 'div'
+};
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiCardHeader'
+})(CardHeader);
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@material-ui/core/CardHeader/index.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@material-ui/core/CardHeader/index.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/builtin/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/builtin/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _CardHeader.default;
+  }
+});
+
+var _CardHeader = _interopRequireDefault(__webpack_require__(/*! ./CardHeader */ "./node_modules/@material-ui/core/CardHeader/CardHeader.js"));
 
 /***/ }),
 
@@ -13445,196 +13197,6 @@ exports.default = _default;
 
 /***/ }),
 
-/***/ "./node_modules/@material-ui/core/styles/MuiThemeProvider.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@material-ui/core/styles/MuiThemeProvider.js ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/builtin/interopRequireWildcard */ "./node_modules/@babel/runtime/helpers/builtin/interopRequireWildcard.js");
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/builtin/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/builtin/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _objectSpread2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/objectSpread */ "./node_modules/@babel/runtime/helpers/builtin/objectSpread.js"));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/defineProperty */ "./node_modules/@babel/runtime/helpers/builtin/defineProperty.js"));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/classCallCheck */ "./node_modules/@babel/runtime/helpers/builtin/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/createClass */ "./node_modules/@babel/runtime/helpers/builtin/createClass.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/builtin/possibleConstructorReturn.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/builtin/inherits */ "./node_modules/@babel/runtime/helpers/builtin/inherits.js"));
-
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-
-var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
-
-var _warning = _interopRequireDefault(__webpack_require__(/*! warning */ "./node_modules/warning/warning.js"));
-
-var _brcast = _interopRequireDefault(__webpack_require__(/*! brcast */ "./node_modules/brcast/dist/brcast.es.js"));
-
-var _themeListener = _interopRequireWildcard(__webpack_require__(/*! ./themeListener */ "./node_modules/@material-ui/core/styles/themeListener.js"));
-
-var _exactProp = _interopRequireDefault(__webpack_require__(/*! ../utils/exactProp */ "./node_modules/@material-ui/core/utils/exactProp.js"));
-
-/**
- * This component takes a `theme` property.
- * It makes the `theme` available down the React tree thanks to React context.
- * This component should preferably be used at **the root of your component tree**.
- */
-var MuiThemeProvider =
-/*#__PURE__*/
-function (_React$Component) {
-  (0, _inherits2.default)(MuiThemeProvider, _React$Component);
-
-  function MuiThemeProvider(props, context) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, MuiThemeProvider);
-    _this = (0, _possibleConstructorReturn2.default)(this, (MuiThemeProvider.__proto__ || Object.getPrototypeOf(MuiThemeProvider)).call(this, props, context)); // Get the outer theme from the context, can be null
-
-    _this.broadcast = (0, _brcast.default)();
-    _this.unsubscribeId = null;
-    _this.outerTheme = null;
-    _this.outerTheme = _themeListener.default.initial(context); // Propagate the theme so it can be accessed by the children
-
-    _this.broadcast.setState(_this.mergeOuterLocalTheme(_this.props.theme));
-
-    return _this;
-  }
-
-  (0, _createClass2.default)(MuiThemeProvider, [{
-    key: "getChildContext",
-    value: function getChildContext() {
-      var _ref;
-
-      var _props = this.props,
-          sheetsManager = _props.sheetsManager,
-          disableStylesGeneration = _props.disableStylesGeneration;
-      var muiThemeProviderOptions = this.context.muiThemeProviderOptions || {};
-
-      if (sheetsManager !== undefined) {
-        muiThemeProviderOptions.sheetsManager = sheetsManager;
-      }
-
-      if (disableStylesGeneration !== undefined) {
-        muiThemeProviderOptions.disableStylesGeneration = disableStylesGeneration;
-      }
-
-      return _ref = {}, (0, _defineProperty2.default)(_ref, _themeListener.CHANNEL, this.broadcast), (0, _defineProperty2.default)(_ref, "muiThemeProviderOptions", muiThemeProviderOptions), _ref;
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      // Subscribe on the outer theme, if present
-      this.unsubscribeId = _themeListener.default.subscribe(this.context, function (outerTheme) {
-        _this2.outerTheme = outerTheme; // Forward the parent theme update to the children
-
-        _this2.broadcast.setState(_this2.mergeOuterLocalTheme(_this2.props.theme));
-      });
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps) {
-      // Propagate a local theme update
-      if (this.props.theme !== prevProps.theme) {
-        this.broadcast.setState(this.mergeOuterLocalTheme(this.props.theme));
-      }
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      if (this.unsubscribeId !== null) {
-        _themeListener.default.unsubscribe(this.context, this.unsubscribeId);
-      }
-    }
-  }, {
-    key: "mergeOuterLocalTheme",
-    // Simple merge between the outer theme and the local theme
-    value: function mergeOuterLocalTheme(localTheme) {
-      // To support composition of theme.
-      if (typeof localTheme === 'function') {
-         true ? (0, _warning.default)(this.outerTheme, ['Material-UI: you are providing a theme function property ' + 'to the MuiThemeProvider component:', '<MuiThemeProvider theme={outerTheme => outerTheme} />', '', 'However, no outer theme is present.', 'Make sure a theme is already injected higher in the React tree ' + 'or provide a theme object.'].join('\n')) : undefined;
-        return localTheme(this.outerTheme);
-      }
-
-      if (!this.outerTheme) {
-        return localTheme;
-      }
-
-      return (0, _objectSpread2.default)({}, this.outerTheme, localTheme);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      // TODO move the sheetsManager property to a different component.
-      // warning(
-      //   typeof window !== 'undefined' || this.props.sheetsManager,
-      //   [
-      //     'Material-UI: you need to provide a sheetsManager to the MuiThemeProvider ' +
-      //       'when rendering on the server.',
-      //     'If you do not, you might experience a memory leak',
-      //   ].join('\n'),
-      // );
-      return this.props.children;
-    }
-  }]);
-  return MuiThemeProvider;
-}(_react.default.Component);
-
-MuiThemeProvider.propTypes =  true ? {
-  /**
-   * You can wrap a node.
-   */
-  children: _propTypes.default.node.isRequired,
-
-  /**
-   * You can disable the generation of the styles with this option.
-   * It can be useful when traversing the React tree outside of the HTML
-   * rendering step on the server.
-   * Let's say you are using react-apollo to extract all
-   * the queries made by the interface server side.
-   * You can significantly speed up the traversal with this property.
-   */
-  disableStylesGeneration: _propTypes.default.bool,
-
-  /**
-   * The sheetsManager is used to deduplicate style sheet injection in the page.
-   * It's deduplicating using the (theme, styles) couple.
-   * On the server, you should provide a new instance for each request.
-   */
-  sheetsManager: _propTypes.default.object,
-
-  /**
-   * A theme object.
-   */
-  theme: _propTypes.default.oneOfType([_propTypes.default.object, _propTypes.default.func]).isRequired
-} : undefined;
-MuiThemeProvider.propTypes =  true ? (0, _exactProp.default)(MuiThemeProvider.propTypes) : undefined;
-MuiThemeProvider.childContextTypes = (0, _objectSpread2.default)({}, _themeListener.default.contextTypes, {
-  muiThemeProviderOptions: _propTypes.default.object
-});
-MuiThemeProvider.contextTypes = (0, _objectSpread2.default)({}, _themeListener.default.contextTypes, {
-  muiThemeProviderOptions: _propTypes.default.object
-});
-var _default = MuiThemeProvider;
-exports.default = _default;
-
-/***/ }),
-
 /***/ "./node_modules/@material-ui/core/styles/colorManipulator.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/@material-ui/core/styles/colorManipulator.js ***!
@@ -14415,27 +13977,6 @@ function createPalette(palette) {
 
 /***/ }),
 
-/***/ "./node_modules/@material-ui/core/styles/createStyles.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@material-ui/core/styles/createStyles.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = createStyles;
-
-function createStyles(s) {
-  return s;
-}
-
-/***/ }),
-
 /***/ "./node_modules/@material-ui/core/styles/createTypography.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/@material-ui/core/styles/createTypography.js ***!
@@ -14675,80 +14216,6 @@ function getThemeProps(params) {
 
 var _default = getThemeProps;
 exports.default = _default;
-
-/***/ }),
-
-/***/ "./node_modules/@material-ui/core/styles/index.js":
-/*!********************************************************!*\
-  !*** ./node_modules/@material-ui/core/styles/index.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/builtin/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/builtin/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "createGenerateClassName", {
-  enumerable: true,
-  get: function get() {
-    return _createGenerateClassName.default;
-  }
-});
-Object.defineProperty(exports, "createMuiTheme", {
-  enumerable: true,
-  get: function get() {
-    return _createMuiTheme.default;
-  }
-});
-Object.defineProperty(exports, "jssPreset", {
-  enumerable: true,
-  get: function get() {
-    return _jssPreset.default;
-  }
-});
-Object.defineProperty(exports, "MuiThemeProvider", {
-  enumerable: true,
-  get: function get() {
-    return _MuiThemeProvider.default;
-  }
-});
-Object.defineProperty(exports, "createStyles", {
-  enumerable: true,
-  get: function get() {
-    return _createStyles.default;
-  }
-});
-Object.defineProperty(exports, "withStyles", {
-  enumerable: true,
-  get: function get() {
-    return _withStyles.default;
-  }
-});
-Object.defineProperty(exports, "withTheme", {
-  enumerable: true,
-  get: function get() {
-    return _withTheme.default;
-  }
-});
-
-var _createGenerateClassName = _interopRequireDefault(__webpack_require__(/*! ./createGenerateClassName */ "./node_modules/@material-ui/core/styles/createGenerateClassName.js"));
-
-var _createMuiTheme = _interopRequireDefault(__webpack_require__(/*! ./createMuiTheme */ "./node_modules/@material-ui/core/styles/createMuiTheme.js"));
-
-var _jssPreset = _interopRequireDefault(__webpack_require__(/*! ./jssPreset */ "./node_modules/@material-ui/core/styles/jssPreset.js"));
-
-var _MuiThemeProvider = _interopRequireDefault(__webpack_require__(/*! ./MuiThemeProvider */ "./node_modules/@material-ui/core/styles/MuiThemeProvider.js"));
-
-var _createStyles = _interopRequireDefault(__webpack_require__(/*! ./createStyles */ "./node_modules/@material-ui/core/styles/createStyles.js"));
-
-var _withStyles = _interopRequireDefault(__webpack_require__(/*! ./withStyles */ "./node_modules/@material-ui/core/styles/withStyles.js"));
-
-var _withTheme = _interopRequireDefault(__webpack_require__(/*! ./withTheme */ "./node_modules/@material-ui/core/styles/withTheme.js"));
 
 /***/ }),
 
@@ -17679,59 +17146,6 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 } : function (obj) {
   return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
-
-/***/ }),
-
-/***/ "./node_modules/brcast/dist/brcast.es.js":
-/*!***********************************************!*\
-  !*** ./node_modules/brcast/dist/brcast.es.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function createBroadcast (initialState) {
-  var listeners = {};
-  var id = 1;
-  var _state = initialState;
-
-  function getState () {
-    return _state
-  }
-
-  function setState (state) {
-    _state = state;
-    var keys = Object.keys(listeners);
-    var i = 0;
-    var len = keys.length;
-    for (; i < len; i++) {
-      // if a listener gets unsubscribed during setState we just skip it
-      if (listeners[keys[i]]) { listeners[keys[i]](state); }
-    }
-  }
-
-  // subscribe to changes and return the subscriptionId
-  function subscribe (listener) {
-    if (typeof listener !== 'function') {
-      throw new Error('listener must be a function.')
-    }
-    var currentId = id;
-    listeners[currentId] = listener;
-    id += 1;
-    return currentId
-  }
-
-  // remove subscription by removing the listener function
-  function unsubscribe (id) {
-    listeners[id] = undefined;
-  }
-
-  return { getState: getState, setState: setState, subscribe: subscribe, unsubscribe: unsubscribe }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (createBroadcast);
-
 
 /***/ }),
 

@@ -31,10 +31,13 @@ import axios from 'axios';
 class SimpleDialog extends React.Component {
   state = {
     title: '',
+    year: new Date(Date.now()).getFullYear(),
+    month: new Date(Date.now()).getMonth(),
+    day: new Date(Date.now()).getDate(),
     startTime: '',
     endTime: '',
-    description: '',
-    date: 0
+    description: ''
+    
   };
 
   handleChange = name => event => {
@@ -51,7 +54,9 @@ class SimpleDialog extends React.Component {
     console.log('saved')
     axios.post('/api', {
       title: this.state.title,
-      date: new Date(Date.now()),
+      year: this.state.year,
+      month: this.state.month,
+      day: this.state.day,
       startTime: this.state.startTime,
       endTime: this.state.endTime,
       description: this.state.description,
