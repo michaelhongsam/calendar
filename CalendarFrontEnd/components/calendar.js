@@ -14,6 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import axios from "axios";
 
 import Day from "./day";
+import EventModal from "./eventModal";
 
 class Calendar extends Component {
   constructor(props) {
@@ -26,7 +27,18 @@ class Calendar extends Component {
       month: TODAY.getMonth() + 1, // getMonth() STARTS AT 0. Jan --> 0
       day: TODAY.getDay(), // getDay() STARTS AT 0. Sunday --> 0
 
-      events: []
+      events: [],
+
+      open: false,
+
+      modalDialogTitle: '',
+      modalTitle: '',
+      modalYear: 0,
+      modalMonth: 0,
+      modalDay: 0,
+      modalStartTime: '',
+      modalEndTime: '',
+      modalDescription: '',
     };
   }
 
@@ -46,6 +58,20 @@ class Calendar extends Component {
       [event.target.name]: event.target.value
     });
   };
+
+  // modalOpen = () => {
+  //   // console.log(year, month, day)
+  //   this.setState({
+  //     open : true
+  //   })
+  // }
+
+  modalClose = () => {
+    this.setState({
+      open : false
+    })
+  }
+
 
   renderTable() {
     let leadingSpaces = new Date(
@@ -71,7 +97,18 @@ class Calendar extends Component {
           week.push(<Day />);
           leadingSpaces--;
         } else if (counter <= numberOfDays) {
-          week.push(<Day date={counter} />);
+          week.push(
+            <Day 
+              date={counter}
+              onClick={ () => {
+                this.setState({
+                  open : true,
+                  modalYear : this.state.year,
+                  modalMonth : this.state.month,
+                  modalDay : counter,
+                })}
+              }
+            />);
           counter++;
         } else if (trailingSpaces > 0) {
           week.push(<Day />);
@@ -101,6 +138,18 @@ class Calendar extends Component {
     // console.log("events: " + this.state.events);
     return (
       <div>
+        <EventModal 
+          dialogtitle={`Create an event`}
+          title={this.state.modalTitle}
+          year={this.state.modalYear}
+          month={this.state.modalMonth}
+          day={this.state.modalDay}
+          starttime={this.state.modalStartTime}
+          endtime={this.state.modalEndTime}
+          endtime={this.state.modalDescription}
+          open={this.state.open}
+          onClose={this.modalClose}
+        />
         <form autoComplete="off">
           <FormControl>
             <InputLabel htmlFor="select-month">Month</InputLabel>

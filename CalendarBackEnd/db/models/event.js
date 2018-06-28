@@ -11,11 +11,11 @@ const Event = db.define('event', {
 	description: Sequelize.TEXT
 });
 
-const EventTwo = db.define('event-two', {
-	startTime: Sequelize.DATE,
-	endTime: Sequelize.DATE,
-	title: Sequelize.STRING,
-	description: Sequelize.TEXT
-})
+// const EventTwo = db.define('event-two', {
+// 	startTime: Sequelize.DATE,
+// 	endTime: Sequelize.DATE,
+// 	title: Sequelize.STRING,
+// 	description: Sequelize.TEXT
+// })
 
-module.exports = {Event, EventTwo};
+module.exports = Event

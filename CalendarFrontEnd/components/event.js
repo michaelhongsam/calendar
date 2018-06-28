@@ -9,14 +9,6 @@ function handleClick() {
   alert("You clicked the Event."); // eslint-disable-line no-alert
 }
 
-function handleDelete() {
-  alert('You clicked the delete icon.'); // eslint-disable-line no-alert
-}
-
-function handleClick() {
-  alert('You clicked the Chip.'); // eslint-disable-line no-alert
-}
-
 function Event(props) {
   return (
       <Chip
@@ -26,6 +18,5 @@ function Event(props) {
       />
   );
 }
-
 
 export default Event

@@ -8,13 +8,16 @@ import Typography from '@material-ui/core/Typography';
 
 import Event from './event'
 
+//function handleClick(){console.log('clicked a day')}
+
 function Day(props) {
   let date = props.date
+  let handleClick = props.onClick
   // const { classes } = props;
   // const bull = <span className={classes.bullet}>•</span>;
   // console.log(props.date)
     return (
-        <Card>
+        <Card onClick={handleClick}>
         { 
           date ? (
             <div>

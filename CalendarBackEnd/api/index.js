@@ -1,22 +1,25 @@
 const router = require("express").Router();
-const EventTwo = require("../db/models");
-const Event = EventTwo;
+const Event = require("../db/models");
 
 // matches GET requests to /api/
 router.get("/", (req, res, next) => {
-  let dbRequest;
-  if (req.query.startTime) {
-    console.log('hitting /api?')
-    console.log(req.requery)
-    dbRequest = Event.findAll({
-      where: {
-        startTime: new Date(req.query.startTime)
-      }
-    });
-  } else {
-    dbRequest = Event.findAll();
-  }
-  dbRequest.then(events => res.json(events)).catch(next);
+  // let dbRequest;
+  // if (req.query.startTime) {
+  //   // console.log('hitting /api?')
+  //   // console.log(req.query)
+  //   dbRequest = Event.findAll({
+  //     where: {
+  //       startTime: new Date(req.query.startTime)
+  //     }
+  //   });
+  // } else {
+  //   dbRequest = Event.findAll();
+  // }
+  // dbRequest.then(events => res.json(events)).catch(next);
+
+  Event.findAll()
+    .then(events => res.json(events))
+    .catch(next);
 });
 
 // matches POST requests to /api/

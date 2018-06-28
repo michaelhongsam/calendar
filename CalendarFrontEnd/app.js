@@ -6,7 +6,7 @@ import CreateEvent from './components/createEvent'
 const App = () => {
   return (
     <div className="app">
-      <CreateEvent/>
+      
       <Calendar />
     </div>
   )

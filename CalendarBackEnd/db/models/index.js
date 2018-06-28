@@ -1,3 +1,3 @@
-const {EventTwo} = require('./event.js')
+const Event = require('./event.js')
 
-module.exports = EventTwo;
+module.exports = Event;

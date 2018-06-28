@@ -118,7 +118,6 @@ var App = function App() {
   return _react2.default.createElement(
     'div',
     { className: 'app' },
-    _react2.default.createElement(_createEvent2.default, null),
     _react2.default.createElement(_calendar2.default, null)
   );
 };
@@ -197,6 +196,10 @@ var _day = __webpack_require__(/*! ./day */ "./CalendarFrontEnd/components/day.j
 
 var _day2 = _interopRequireDefault(_day);
 
+var _eventModal = __webpack_require__(/*! ./eventModal */ "./CalendarFrontEnd/components/eventModal.js");
+
+var _eventModal2 = _interopRequireDefault(_eventModal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -221,13 +224,30 @@ var Calendar = function (_Component) {
       _this.setState(_defineProperty({}, event.target.name, event.target.value));
     };
 
+    _this.modalClose = function () {
+      _this.setState({
+        open: false
+      });
+    };
+
     _this.state = {
       // classes,
       year: _util.TODAY.getFullYear(),
       month: _util.TODAY.getMonth() + 1, // getMonth() STARTS AT 0. Jan --> 0
       day: _util.TODAY.getDay(), // getDay() STARTS AT 0. Sunday --> 0
 
-      events: []
+      events: [],
+
+      open: false,
+
+      modalDialogTitle: '',
+      modalTitle: '',
+      modalYear: 0,
+      modalMonth: 0,
+      modalDay: 0,
+      modalStartTime: '',
+      modalEndTime: '',
+      modalDescription: ''
     };
     return _this;
   }
@@ -245,9 +265,19 @@ var Calendar = function (_Component) {
         });
       });
     }
+
+    // modalOpen = () => {
+    //   // console.log(year, month, day)
+    //   this.setState({
+    //     open : true
+    //   })
+    // }
+
   }, {
     key: "renderTable",
     value: function renderTable() {
+      var _this3 = this;
+
       var leadingSpaces = new Date(this.state.month + ", 1 " + this.state.year).getDay();
       var numberOfDays = (0, _util.daysInMonth)(this.state.month, this.state.year);
 
@@ -269,7 +299,17 @@ var Calendar = function (_Component) {
             week.push(_react2.default.createElement(_day2.default, null));
             leadingSpaces--;
           } else if (counter <= numberOfDays) {
-            week.push(_react2.default.createElement(_day2.default, { date: counter }));
+            week.push(_react2.default.createElement(_day2.default, {
+              date: counter,
+              onClick: function onClick() {
+                _this3.setState({
+                  open: true,
+                  modalYear: _this3.state.year,
+                  modalMonth: _this3.state.month,
+                  modalDay: counter
+                });
+              }
+            }));
             counter++;
           } else if (trailingSpaces > 0) {
             week.push(_react2.default.createElement(_day2.default, null));
@@ -298,11 +338,22 @@ var Calendar = function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _React$createElement;
+
       // let data = this.state.data
       // console.log("events: " + this.state.events);
       return _react2.default.createElement(
         "div",
         null,
+        _react2.default.createElement(_eventModal2.default, (_React$createElement = {
+          dialogtitle: "Create an event",
+          title: this.state.modalTitle,
+          year: this.state.modalYear,
+          month: this.state.modalMonth,
+          day: this.state.modalDay,
+          starttime: this.state.modalStartTime,
+          endtime: this.state.modalEndTime
+        }, _defineProperty(_React$createElement, "endtime", this.state.modalDescription), _defineProperty(_React$createElement, "open", this.state.open), _defineProperty(_React$createElement, "onClose", this.modalClose), _React$createElement)),
         _react2.default.createElement(
           "form",
           { autoComplete: "off" },
@@ -821,15 +872,18 @@ var _event2 = _interopRequireDefault(_event);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//function handleClick(){console.log('clicked a day')}
+
 // import Button from '@material-ui/core/Button';
 function Day(props) {
   var date = props.date;
+  var handleClick = props.onClick;
   // const { classes } = props;
   // const bull = <span className={classes.bullet}>•</span>;
   // console.log(props.date)
   return _react2.default.createElement(
     _Card2.default,
-    null,
+    { onClick: handleClick },
     date ? _react2.default.createElement(
       'div',
       null,
@@ -879,14 +933,6 @@ function handleClick() {
   alert("You clicked the Event."); // eslint-disable-line no-alert
 }
 
-function handleDelete() {
-  alert('You clicked the delete icon.'); // eslint-disable-line no-alert
-}
-
-function handleClick() {
-  alert('You clicked the Chip.'); // eslint-disable-line no-alert
-}
-
 function Event(props) {
   return _react2.default.createElement(_Chip2.default, {
     label: props.title,
@@ -896,6 +942,234 @@ function Event(props) {
 }
 
 exports.default = Event;
+
+/***/ }),
+
+/***/ "./CalendarFrontEnd/components/eventModal.js":
+/*!***************************************************!*\
+  !*** ./CalendarFrontEnd/components/eventModal.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Button = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/Button/index.js");
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _Avatar = __webpack_require__(/*! @material-ui/core/Avatar */ "./node_modules/@material-ui/core/Avatar/index.js");
+
+var _Avatar2 = _interopRequireDefault(_Avatar);
+
+var _List = __webpack_require__(/*! @material-ui/core/List */ "./node_modules/@material-ui/core/List/index.js");
+
+var _List2 = _interopRequireDefault(_List);
+
+var _ListItem = __webpack_require__(/*! @material-ui/core/ListItem */ "./node_modules/@material-ui/core/ListItem/index.js");
+
+var _ListItem2 = _interopRequireDefault(_ListItem);
+
+var _ListItemAvatar = __webpack_require__(/*! @material-ui/core/ListItemAvatar */ "./node_modules/@material-ui/core/ListItemAvatar/index.js");
+
+var _ListItemAvatar2 = _interopRequireDefault(_ListItemAvatar);
+
+var _ListItemText = __webpack_require__(/*! @material-ui/core/ListItemText */ "./node_modules/@material-ui/core/ListItemText/index.js");
+
+var _ListItemText2 = _interopRequireDefault(_ListItemText);
+
+var _DialogTitle = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/DialogTitle/index.js");
+
+var _DialogTitle2 = _interopRequireDefault(_DialogTitle);
+
+var _Dialog = __webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/Dialog/index.js");
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
+
+var _Typography = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js");
+
+var _Typography2 = _interopRequireDefault(_Typography);
+
+var _blue = __webpack_require__(/*! @material-ui/core/colors/blue */ "./node_modules/@material-ui/core/colors/blue.js");
+
+var _blue2 = _interopRequireDefault(_blue);
+
+var _MenuItem = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/MenuItem/index.js");
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+var _TextField = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/TextField/index.js");
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+// import PropTypes from 'prop-types';
+// import { withStyles } from '@material-ui/core/styles';
+
+// import PersonIcon from '@material-ui/icons/Person';
+// import AddIcon from '@material-ui/icons/Add';
+
+
+// const emails = ["username@gmail.com", "user02@gmail.com"];
+// const styles = {
+//   avatar: {
+//     backgroundColor: blue[100],
+//     color: blue[600],
+//   },
+// };
+
+
+var EventModal = function (_React$Component) {
+  _inherits(EventModal, _React$Component);
+
+  function EventModal() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, EventModal);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EventModal.__proto__ || Object.getPrototypeOf(EventModal)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      dialogTitle: _this.props.dialogtitle,
+      title: _this.props.title,
+      year: _this.props.year,
+      month: _this.props.month,
+      day: _this.props.day,
+      startTime: _this.props.starttime,
+      endTime: _this.props.endtime,
+      description: _this.props.description
+
+    }, _this.handleChange = function (name) {
+      return function (event) {
+        _this.setState(_defineProperty({}, name, event.target.value));
+      };
+    }, _this.handleClose = function () {
+      _this.props.onClose();
+    }, _this.handleSave = function () {
+      console.log('saved');
+      _axios2.default.post('/api', {
+        title: _this.state.title,
+        year: _this.state.year,
+        month: _this.state.month,
+        day: _this.state.day,
+        startTime: _this.state.startTime,
+        endTime: _this.state.endTime,
+        description: _this.state.description
+      });
+      _this.handleClose();
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(EventModal, [{
+    key: "render",
+
+
+    // handleListItemClick = value => {
+    //   this.props.onClose(value);
+    // };
+
+    value: function render() {
+      var _props = this.props,
+          classes = _props.classes,
+          onClose = _props.onClose,
+          selectedValue = _props.selectedValue,
+          other = _objectWithoutProperties(_props, ["classes", "onClose", "selectedValue"]);
+
+      return _react2.default.createElement(
+        _Dialog2.default,
+        _extends({
+          onClose: this.handleClose,
+          "aria-labelledby": "simple-dialog-title"
+        }, other),
+        _react2.default.createElement(
+          _DialogTitle2.default,
+          { id: "simple-dialog-title" },
+          this.state.dialogTitle
+        ),
+        _react2.default.createElement(
+          "div",
+          null,
+          _react2.default.createElement(
+            "form",
+            { noValidate: true, autoComplete: "off" },
+            _react2.default.createElement(_TextField2.default, {
+              id: "title",
+              label: "Name",
+              value: this.state.name,
+              onChange: this.handleChange('title'),
+              margin: "normal"
+            }),
+            _react2.default.createElement("br", null),
+            _react2.default.createElement(_TextField2.default, {
+              id: "start-time",
+              label: "Start Time",
+              value: this.state.startTime,
+              onChange: this.handleChange('startTime'),
+              margin: "normal"
+            }),
+            _react2.default.createElement("br", null),
+            _react2.default.createElement(_TextField2.default, {
+              id: "end-time",
+              label: "End Time",
+              value: this.state.endTime,
+              onChange: this.handleChange('endTime'),
+              margin: "normal"
+            }),
+            _react2.default.createElement("br", null),
+            _react2.default.createElement(_TextField2.default, {
+              id: "description",
+              label: "Description",
+              value: this.state.description,
+              onChange: this.handleChange('description'),
+              margin: "normal"
+            }),
+            _react2.default.createElement("br", null),
+            _react2.default.createElement(
+              _Button2.default,
+              { onClick: this.handleSave },
+              "Save"
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return EventModal;
+}(_react2.default.Component);
+
+exports.default = EventModal;
 
 /***/ }),
 
